@@ -1,12 +1,12 @@
-# mvc
+# mvcauth
 
-.NET Core 2.1 MVC Website with ServiceStack APIs
+.NET Core 2.2 MVC Website integrated with ServiceStack Auth
 
-[![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvc.png)](http://mvc.web-templates.io/)
+[![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcauth.png)](http://mvcauth.web-templates.io/)
 
-> Browse [source code](https://github.com/NetCoreTemplates/mvc), view live demo [mvc.web-templates.io](http://mvc.web-templates.io) and install with [dotnet-new](http://docs.servicestack.net/dotnet-new):
+> Browse [source code](https://github.com/NetCoreTemplates/mvcauth), view live demo [mvcauth.web-templates.io](http://mvcauth.web-templates.io) and install with [dotnet-new](http://docs.servicestack.net/dotnet-new):
 
     $ npm install -g @servicestack/cli
 
-    $ dotnet-new mvc ProjectName
+    $ dotnet-new mvcauth ProjectName
 
