@@ -115,7 +115,7 @@ namespace MyApp
 
         private void AddSeedUsers(IUserAuthRepository authRepo)
         {
-            if (authRepo.GetUserAuthByUserName("test@user.com") == null)
+            if (authRepo.GetUserAuthByUserName("user@gmail.com") == null)
             {
                 var testUser = authRepo.CreateUserAuth(new UserAuth
                 {
@@ -126,7 +126,7 @@ namespace MyApp
                 }, "test");
             }
 
-            if (authRepo.GetUserAuthByUserName("role@user.com") == null)
+            if (authRepo.GetUserAuthByUserName("manager@gmail.com") == null)
             {
                 var roleUser = authRepo.CreateUserAuth(new UserAuth
                 {
