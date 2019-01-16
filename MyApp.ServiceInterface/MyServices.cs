@@ -5,6 +5,7 @@ using ServiceStack;
 using ServiceStack.Templates;
 using ServiceStack.DataAnnotations;
 using MyApp.ServiceModel;
+using ServiceStack.Configuration;
 
 namespace MyApp.ServiceInterface
 {
@@ -25,6 +26,12 @@ namespace MyApp.ServiceInterface
         public object Any(RequiresRole request)
         {
             return new RequiresRoleResponse { Result = $"Hello, {request.Name}!" };
+        }
+
+        [RequiredRole(nameof(RoleNames.Admin))]
+        public object Any(RequiresAdmin request)
+        {
+            return new RequiresAdminResponse { Result = $"Hello, {request.Name}!" };
         }
     }
 }

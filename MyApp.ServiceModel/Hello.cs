@@ -38,4 +38,16 @@ namespace MyApp.ServiceModel
         public string Result { get; set; }
     }
 
+    [Route("/requiresadmin")]
+    [Route("/requiresadmin/{Name}")]
+    public class RequiresAdmin : IReturn<RequiresAdminResponse>
+    {
+        public string Name { get; set; }
+    }
+
+    public class RequiresAdminResponse
+    {
+        public string Result { get; set; }
+    }
+
 }

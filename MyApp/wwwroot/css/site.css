@@ -80,3 +80,7 @@ h3 {
 .btn-social .fab {
   font-size: 1.2em;
 }
+.quicklist span {
+  display: block;
+  margin-left: 1em;
+}

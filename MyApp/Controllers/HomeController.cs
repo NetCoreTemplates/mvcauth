@@ -12,22 +12,16 @@ using ServiceStack.Mvc;
 
 namespace MyApp.Controllers
 {
-    public class HomeController : ControllerBase
+    public class HomeController : ServiceStackController
     {
         public IActionResult Index()
         {
-            return View(SessionAs<AuthUserSession>());
+            return View(SessionAs<CustomUserSession>());
         }
 
         public IActionResult Privacy()
         {
             return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         [Authorize]
@@ -40,6 +34,18 @@ namespace MyApp.Controllers
         public IActionResult RequiresRole()
         {
             return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult RequiresAdmin()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

@@ -85,7 +85,10 @@ namespace MyApp
         {
             SetConfig(new HostConfig
             {
-                DebugMode = AppSettings.Get(nameof(HostConfig.DebugMode), false)
+                DebugMode = AppSettings.Get(nameof(HostConfig.DebugMode), false),
+#if DEBUG                
+                AdminAuthSecret = "adm1nSecret", // Enable Admin Access with ?authsecret=adm1nSecret
+#endif
             });
 
             container.Register<IDbConnectionFactory>(c =>
@@ -98,7 +101,7 @@ namespace MyApp
             container.Resolve<IAuthRepository>().InitSchema();
             
             // TODO: Replace OAuth App settings in: appsettings.Development.json
-            Plugins.Add(new AuthFeature(() => new AuthUserSession(), 
+            Plugins.Add(new AuthFeature(() => new CustomUserSession(), 
                 new IAuthProvider[] {
                     new NetCoreIdentityAuthProvider(AppSettings), // Adapter to enable ServiceStack Auth in MVC
                     new CredentialsAuthProvider(AppSettings),     // Sign In with Username / Password credentials 
@@ -138,7 +141,24 @@ namespace MyApp
                 }, "test");
                 authRepo.AssignRoles(roleUser, roles:new[]{ "Manager" });
             }
+
+            if (authRepo.GetUserAuthByUserName("admin@gmail.com") == null)
+            {
+                var roleUser = authRepo.CreateUserAuth(new UserAuth
+                {
+                    DisplayName = "Admin User",
+                    Email = "admin@gmail.com",
+                    FirstName = "Admin",
+                    LastName = "User",
+                }, "test");
+                authRepo.AssignRoles(roleUser, roles:new[]{ "Admin" });
+            }
         }
+    }
+
+    // Add any additional metadata properties you want to store in the Users Typed Session
+    public class CustomUserSession : AuthUserSession
+    {
     }
     
 }

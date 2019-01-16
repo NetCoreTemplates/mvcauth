@@ -6,23 +6,46 @@ using ServiceStack.Mvc;
 
 namespace MyApp.Controllers
 {
-    public class AccountController : ControllerBase
+    public class AccountController : ServiceStackController
     {
         [HttpGet]
         public IActionResult Login()
         {
-            return View(SessionAs<AuthUserSession>());
+            return View(SessionAs<CustomUserSession>());
         }
-
-        public IActionResult AccessDenied()
+        
+        [HttpPost]
+        public ActionResult Login(string userName, string password, bool rememberMe, string redirect = null)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (var authService = ResolveService<AuthenticateService>())
+                    {
+                        var response = authService.Authenticate(new Authenticate
+                        {
+                            provider = CredentialsAuthProvider.Name,
+                            UserName = userName,
+                            Password = password,
+                            RememberMe = rememberMe,
+                        });
+                    }
+
+                    return Redirect(string.IsNullOrEmpty(redirect) ? "/" : redirect);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                }
+            }
+            return View("Index", SessionAs<CustomUserSession>());
         }
         
         [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            return View(SessionAs<CustomUserSession>());
         }
         
         [HttpPost]
@@ -52,6 +75,11 @@ namespace MyApp.Controllers
                     ModelState.AddModelError("", ex.Message);
                 }
             }
+            return View(SessionAs<CustomUserSession>());
+        }
+ 
+        public IActionResult AccessDenied()
+        {
             return View();
         }
     }
