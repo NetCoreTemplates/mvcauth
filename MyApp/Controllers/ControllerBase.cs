@@ -12,7 +12,7 @@ namespace MyApp.Controllers
         /// Accessible from both /Home/Login and /Account/Login pages 
         /// </summary>
         [HttpPost]
-        public ActionResult Login(string userName, string password, string redirect = null)
+        public ActionResult Login(string userName, string password, bool rememberMe, string redirect = null)
         {
             if (ModelState.IsValid)
             {
@@ -25,7 +25,7 @@ namespace MyApp.Controllers
                             provider = CredentialsAuthProvider.Name,
                             UserName = userName,
                             Password = password,
-                            RememberMe = true,
+                            RememberMe = rememberMe,
                         });
                     }
 

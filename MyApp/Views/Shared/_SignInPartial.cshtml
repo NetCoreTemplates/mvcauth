@@ -47,6 +47,14 @@
                 <div class="form-group col-md-4">
                     <button type="submit" class="btn btn-primary">Login</button>
                 </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <input type="checkbox" id="chkRememberMe" name="rememberMe" value="true" checked="checked">
+                    <label for="chkRememberMe">Remember Me</label>
+                </div>
+            </div>
+            <div class="form-row">
                 <div class="form-group col-md-4">
                     <a class="lnk" asp-area="" asp-controller="Account" asp-action="Register" asp-route-ReturnUrl="@ViewData["ReturnUrl"]">Register New User</a>
                 </div>
