@@ -103,7 +103,9 @@ namespace MyApp
             // TODO: Replace OAuth App settings in: appsettings.Development.json
             Plugins.Add(new AuthFeature(() => new CustomUserSession(), 
                 new IAuthProvider[] {
-                    new NetCoreIdentityAuthProvider(AppSettings), // Adapter to enable ServiceStack Auth in MVC
+                    new NetCoreIdentityAuthProvider(AppSettings) { // Adapter to enable ServiceStack Auth in MVC
+                        AdminRoles = { "Manager" }, // Automatically Assign additional roles to Admin Users
+                    },
                     new CredentialsAuthProvider(AppSettings),     // Sign In with Username / Password credentials 
                     new FacebookAuthProvider(AppSettings), /* Create Facebook App at: https://developers.facebook.com/apps */
                     new TwitterAuthProvider(AppSettings),  /* Create Twitter App at: https://dev.twitter.com/apps */

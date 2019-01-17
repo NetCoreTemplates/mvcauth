@@ -23,7 +23,6 @@
             <li><a href="/Home/RequiresAuth">/Home/RequiresAuth</a> - Requires Authentication MVC Page</li>
             <li><a href="/Home/RequiresRole">/Home/RequiresRole</a> - Requires <b>Manager</b> Role MVC Page</li>
             <li><a href="/Home/RequiresAdmin">/Home/RequiresAdmin</a> - Requires <b>Admin</b> User MVC Page</li>
-            <li><a href="/Home/RequiresAdmin?authsecret=adm1nSecret">/Home/RequiresAdmin?authsecret=adm1nSecret</a> - <b>Admin</b> Access</li>
         </ul>
         
         <form action="/requiresauth">
@@ -50,7 +49,22 @@
             <div class="result" style="margin-left: 60px"></div>            
         </form>
         
-        <div><a href="/requiresadmin/Admin?authsecret=adm1nSecret">/requiresadmin/Admin?authsecret=adm1nSecret</a> - <b>Admin</b> API Access</div>
+        <h4>Admin access using <a href="https://docs.servicestack.net/debugging#authsecret">AdminAuthSecret</a></h4>
+                
+        <ul>
+            <li>
+                <a href="/Home/RequiresAuth?authsecret=adm1nSecret">RequiresAuth</a> 
+                <a href="/Home/RequiresRole?authsecret=adm1nSecret">RequiresRole</a> 
+                <a href="/Home/RequiresAdmin?authsecret=adm1nSecret">RequiresAdmin</a> 
+                MVC Pages 
+            </li>
+            <li>
+                <a href="/requiresauth/Admin?authsecret=adm1nSecret">/requiresauth</a> 
+                <a href="/requiresrole/Admin?authsecret=adm1nSecret">/requiresrole</a> 
+                <a href="/requiresadmin/Admin?authsecret=adm1nSecret">/requiresadmin</a> 
+                ServiceStack APIs 
+            </li>
+        </ul>
         
     </div>
 </div>
