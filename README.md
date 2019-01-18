@@ -8,9 +8,9 @@
 
 [![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcauth-login.png)](http://mvcauth.web-templates.io/)
 
-> Browse [source code](https://github.com/NetCoreTemplates/mvcauth), view live demo [mvcauth.web-templates.io](http://mvcauth.web-templates.io) and install with [dotnet-new](http://docs.servicestack.net/dotnet-new):
+> Browse [source code](https://github.com/NetCoreTemplates/mvcauth), view live demo [mvcauth.web-templates.io](http://mvcauth.web-templates.io) and install with the `web` dotnet tool:
 
-    $ npm install -g @servicestack/cli
+    $ dotnet tool install -g web
 
-    $ dotnet-new mvcauth ProjectName
+    $ web new mvcidentity ProjectName
 
