@@ -69,7 +69,7 @@
 else
 {
     <div class="col-lg-6">
-        <table class="table table-bordered">
+        <table id="session-info" class="table table-bordered">
             <caption style="caption-side:top;">Authenticated User Session</caption>
             <tbody>
                 <tr>
@@ -103,7 +103,8 @@ else
                 <tr>
                     <th>ProfileUrl</th>
                     <td>
-                        <img src="@Model.GetProfileUrl()" /> @(Model.ProfileUrl ?? "(fallback)")
+                        <img src="@Model.ProfileUrl" /> 
+                        <span>@(Model.ProfileUrl ?? "(fallback)")</span>
                     </td>
                 </tr>
             </tbody>
@@ -129,7 +130,7 @@ window.addEventListener('load', function() {
     $(document).bindHandlers({
        switchUser: function(u) {
            $("#userName").val(u);
-           $("#password").val('test');
+           $("#password").val('p@55wOrd');
        }
     });        
 });

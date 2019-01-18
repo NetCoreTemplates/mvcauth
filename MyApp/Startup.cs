@@ -39,7 +39,6 @@ namespace MyApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -129,7 +128,7 @@ namespace MyApp
                     Email = "user@gmail.com",
                     FirstName = "Test",
                     LastName = "User",
-                }, "test");
+                }, "p@55wOrd");
             }
 
             if (authRepo.GetUserAuthByUserName("manager@gmail.com") == null)
@@ -140,7 +139,7 @@ namespace MyApp
                     Email = "manager@gmail.com",
                     FirstName = "Test",
                     LastName = "Manager",
-                }, "test");
+                }, "p@55wOrd");
                 authRepo.AssignRoles(roleUser, roles:new[]{ "Manager" });
             }
 
@@ -152,7 +151,7 @@ namespace MyApp
                     Email = "admin@gmail.com",
                     FirstName = "Admin",
                     LastName = "User",
-                }, "test");
+                }, "p@55wOrd");
                 authRepo.AssignRoles(roleUser, roles:new[]{ "Admin" });
             }
         }
@@ -162,5 +161,5 @@ namespace MyApp
     public class CustomUserSession : AuthUserSession
     {
     }
-    
+        
 }

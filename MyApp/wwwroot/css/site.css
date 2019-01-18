@@ -84,3 +84,10 @@ h3 {
   display: block;
   margin-left: 1em;
 }
+#session-info td span {
+  width: 900px;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
