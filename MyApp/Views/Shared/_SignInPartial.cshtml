@@ -26,7 +26,7 @@
         
         <form action="@(ViewData["LoginPath"] ?? "/Home/Login")" method="post">
             <div class="form-row">
-                @Html.ValidationSummary()
+                @Html.ValidationSummary(exceptFields: new[]{ "userName", "password" })
                 <input type="hidden" name="redirect" value="@(Html.GetQueryString("ReturnUrl") ?? ViewData["ReturnUrl"])" />
             </div>
 
