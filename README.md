@@ -12,7 +12,7 @@
 
     $ dotnet tool install -g web
 
-    $ web new mvcidentity ProjectName
+    $ web new mvcauth ProjectName
 
 ### OAuth Setup
 
