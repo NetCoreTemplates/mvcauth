@@ -8,7 +8,7 @@
 
 [![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcauth-login.png)](http://mvcauth.web-templates.io/)
 
-> Browse [source code](https://github.com/NetCoreTemplates/mvcauth), view live demo [mvcauth.web-templates.io](http://mvcauth.web-templates.io) and install with the `web` dotnet tool:
+> Browse [source code](https://github.com/NetCoreTemplates/mvcauth) and install with the `web` dotnet tool:
 
     $ dotnet tool install -g web
 
