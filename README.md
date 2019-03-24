@@ -2,11 +2,11 @@
 
 .NET Core 2.2 MVC Website integrated with ServiceStack Auth
 
-[![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcauth.png)](http://mvcauth.web-templates.io/)
+![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcauth.png)
 
 > Login
 
-[![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcauth-login.png)](http://mvcauth.web-templates.io/)
+![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcauth-login.png)
 
 > Browse [source code](https://github.com/NetCoreTemplates/mvcauth) and install with the `web` dotnet tool:
 
