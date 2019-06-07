@@ -77,7 +77,8 @@ namespace MyApp
         {
             SetConfig(new HostConfig
             {
-                DebugMode = AppSettings.Get(nameof(HostConfig.DebugMode), false),
+                UseSameSiteCookies = true,
+                DebugMode = AppSettings.Get(nameof(HostConfig.DebugMode), HostingEnvironment.IsDevelopment()),
 #if DEBUG                
                 AdminAuthSecret = "adm1nSecret", // Enable Admin Access with ?authsecret=adm1nSecret
 #endif

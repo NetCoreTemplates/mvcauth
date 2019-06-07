@@ -20,10 +20,10 @@ namespace MyApp
                     new NetCoreIdentityAuthProvider(AppSettings) { // Adapter to enable ServiceStack Auth in MVC
                         AdminRoles = { "Manager" }, // Automatically Assign additional roles to Admin Users
                     },
-                    new CredentialsAuthProvider(AppSettings),     // Sign In with Username / Password credentials 
-                    new FacebookAuthProvider(AppSettings), /* Create Facebook App at: https://developers.facebook.com/apps */
-                    new GoogleAuthProvider(AppSettings),   /* Create App https://console.developers.google.com/apis/credentials */
-                    new MicrosoftGraphAuthProvider(AppSettings),   /* Create App https://apps.dev.microsoft.com */
+                    new CredentialsAuthProvider(AppSettings),     /* Sign In with Username / Password credentials */
+                    new FacebookAuthProvider(AppSettings),        /* Create Facebook App at: https://developers.facebook.com/apps */
+                    new GoogleAuthProvider(AppSettings),          /* Create App https://console.developers.google.com/apis/credentials */
+                    new MicrosoftGraphAuthProvider(AppSettings),  /* Create App https://apps.dev.microsoft.com */
                 }));
 
             appHost.Plugins.Add(new RegistrationFeature()); //Enable /register Service
