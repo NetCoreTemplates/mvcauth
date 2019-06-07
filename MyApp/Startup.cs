@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Linq;
 using System.Threading.Tasks;
-using Funq;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,26 +11,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyApp.ServiceInterface;
+using Funq;
 using ServiceStack;
-using ServiceStack.Auth;
-using ServiceStack.Configuration;
-using ServiceStack.Data;
-using ServiceStack.OrmLite;
-using ServiceStack.Text;
+using ServiceStack.Mvc;
 
 namespace MyApp
 {
-    public class Startup
+    public class Startup : ModularStartup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration) 
+            : base(configuration, typeof(MyServices).Assembly) {}
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public new void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -90,76 +83,8 @@ namespace MyApp
 #endif
             });
 
-            container.Register<IDbConnectionFactory>(c =>
-                new OrmLiteConnectionFactory(":memory:", SqliteDialect.Provider));
-
-            container.Register<IAuthRepository>(c =>
-                new OrmLiteAuthRepository(c.Resolve<IDbConnectionFactory>()) {
-                    UseDistinctRoleTables = true,
-                });
-            container.Resolve<IAuthRepository>().InitSchema();
-            
-            // TODO: Replace OAuth App settings in: appsettings.Development.json
-            Plugins.Add(new AuthFeature(() => new CustomUserSession(), 
-                new IAuthProvider[] {
-                    new NetCoreIdentityAuthProvider(AppSettings) { // Adapter to enable ServiceStack Auth in MVC
-                        AdminRoles = { "Manager" }, // Automatically Assign additional roles to Admin Users
-                    },
-                    new CredentialsAuthProvider(AppSettings),     // Sign In with Username / Password credentials 
-                    new FacebookAuthProvider(AppSettings), /* Create Facebook App at: https://developers.facebook.com/apps */
-                    new TwitterAuthProvider(AppSettings),  /* Create Twitter App at: https://dev.twitter.com/apps */
-                    new GoogleAuthProvider(AppSettings),   /* Create App https://console.developers.google.com/apis/credentials */
-                    new MicrosoftGraphAuthProvider(AppSettings),   /* Create App https://apps.dev.microsoft.com */
-                }) {
-                IncludeRegistrationService = true,
-                IncludeAssignRoleServices = false,
-            });
-
-            AddSeedUsers((IUserAuthRepository)container.Resolve<IAuthRepository>());
-        }
-
-        private void AddSeedUsers(IUserAuthRepository authRepo)
-        {
-            if (authRepo.GetUserAuthByUserName("user@gmail.com") == null)
-            {
-                var testUser = authRepo.CreateUserAuth(new UserAuth
-                {
-                    DisplayName = "Test User",
-                    Email = "user@gmail.com",
-                    FirstName = "Test",
-                    LastName = "User",
-                }, "p@55wOrd");
-            }
-
-            if (authRepo.GetUserAuthByUserName("manager@gmail.com") == null)
-            {
-                var roleUser = authRepo.CreateUserAuth(new UserAuth
-                {
-                    DisplayName = "Test Manager",
-                    Email = "manager@gmail.com",
-                    FirstName = "Test",
-                    LastName = "Manager",
-                }, "p@55wOrd");
-                authRepo.AssignRoles(roleUser, roles:new[]{ "Manager" });
-            }
-
-            if (authRepo.GetUserAuthByUserName("admin@gmail.com") == null)
-            {
-                var roleUser = authRepo.CreateUserAuth(new UserAuth
-                {
-                    DisplayName = "Admin User",
-                    Email = "admin@gmail.com",
-                    FirstName = "Admin",
-                    LastName = "User",
-                }, "p@55wOrd");
-                authRepo.AssignRoles(roleUser, roles:new[]{ "Admin" });
-            }
+            Svg.CssFillColor["svg-icons"] = "#E91E63";
         }
     }
 
-    // Add any additional metadata properties you want to store in the Users Typed Session
-    public class CustomUserSession : AuthUserSession
-    {
-    }
-        
 }

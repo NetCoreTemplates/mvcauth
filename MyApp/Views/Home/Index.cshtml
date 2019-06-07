@@ -1,6 +1,6 @@
 ﻿@model CustomUserSession
 @{
-    ViewData["Title"] = "Home Page";
+    ViewBag.Title = "Home Page";
 }
 
 <div class="text-center" style="margin: 0 0 30px 0">
@@ -20,11 +20,166 @@
 else
 {
     <div class="col-lg-12 text-center">
-        <img src="@Model.GetProfileUrl()" style="height:32px; margin-right:.5em">
+        <img src="@Html.UserProfileUrl()" style="height:32px; margin-right:.5em">
         Hi @Model.DisplayName!
         <a href="/auth/logout?continue=/">Sign Out</a>.
     </div>
 }
 </div>
 
-<partial name="_PagesAndApisPartial" />
+<div class="row mt-5">
+    <div class="col-lg-6">
+        <h3>Public APIs and Pages</h3>
+        
+        <ul>
+            <li><a href="/Home/Privacy">/Home/Privacy</a> - Privacy MVC Page</li>
+            <li><a href="/Account/Login">/Account/Login</a> - Sign In MVC Page</li>
+            <li><a href="/Account/Register">/Account/Register</a> - Register User MVC Page</li>
+        </ul>
+        
+        <form action="/hello">
+            <h4>/hello ServiceStack API</h4>
+            <label>Name: </label>
+            <input type="text" class="txtName" name="Name" style="margin: 10px" />
+            <span class="apiurl"></span>
+            <div class="result" style="margin-left: 60px"></div>
+        </form>
+    </div>
+    <div class="col-lg-6">
+        <h3>Secure APIs and Pages</h3>
+        
+        <ul>
+            <li><a href="/Home/RequiresAuth">/Home/RequiresAuth</a> - Requires Authentication MVC Page</li>
+            <li><a href="/Home/RequiresRole">/Home/RequiresRole</a> - Requires <b>Manager</b> Role MVC Page</li>
+            <li><a href="/Home/RequiresAdmin">/Home/RequiresAdmin</a> - Requires <b>Admin</b> User MVC Page</li>
+        </ul>
+        
+        <form action="/requiresauth">
+            <h4>/requiresauth ServiceStack API</h4>
+            <label>Name: </label>
+            <input type="text" class="txtName" name="Name" style="margin: 10px" />
+            <span class="apiurl"></span>
+            <div class="result" style="margin-left: 60px"></div>            
+        </form>
+        
+        <form action="/requiresrole">
+            <h4>/requiresrole ServiceStack API</h4>
+            <label>Name: </label>
+            <input type="text" class="txtName" name="Name" style="margin: 10px" />
+            <span class="apiurl"></span>
+            <div class="result" style="margin-left: 60px"></div>            
+        </form>
+        
+        <form action="/requiresadmin">
+            <h4>/requiresadmin ServiceStack API</h4>
+            <label>Name: </label>
+            <input type="text" class="txtName" name="Name" style="margin: 10px" />
+            <span class="apiurl"></span>
+            <div class="result" style="margin-left: 60px"></div>            
+        </form>
+        
+        <h4>Admin access using <a href="https://docs.servicestack.net/debugging#authsecret">AdminAuthSecret</a></h4>
+                
+        <ul>
+            <li>
+                <a href="/Home/RequiresAuth?authsecret=adm1nSecret">RequiresAuth</a> 
+                <a href="/Home/RequiresRole?authsecret=adm1nSecret">RequiresRole</a> 
+                <a href="/Home/RequiresAdmin?authsecret=adm1nSecret">RequiresAdmin</a> 
+                MVC Pages 
+            </li>
+            <li>
+                <a href="/requiresauth/Admin?authsecret=adm1nSecret">/requiresauth</a> 
+                <a href="/requiresrole/Admin?authsecret=adm1nSecret">/requiresrole</a> 
+                <a href="/requiresadmin/Admin?authsecret=adm1nSecret">/requiresadmin</a> 
+                ServiceStack APIs 
+            </li>
+        </ul>
+        
+    </div>
+</div>
+
+@if (Model.IsAuthenticated)
+{
+    <div class="col-lg-6">
+        <table id="session-info" class="table table-bordered">
+            <caption style="caption-side:top;">Authenticated User Session</caption>
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>@Model.Id</td>
+                </tr>
+                <tr>
+                    <th>UserAuthId</th>
+                    <td>@Model.UserAuthId</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <th>UserName</th>
+                    <td>@Model.UserName</td>
+                </tr>
+                <tr>
+                    <th>UserAuthName</th>
+                    <td>@Model.UserAuthName</td>
+                </tr>
+                <tr>
+                    <th>DisplayName</th>
+                    <td>@Model.DisplayName</td>
+                </tr>
+                <tr>
+                    <th>AuthProvider</th>
+                    <td>@Model.AuthProvider</td>
+                </tr>
+                <tr>
+                    <th>ProfileUrl</th>
+                    <td>
+                        <img src="@Html.UserProfileUrl()" /> 
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">
+                        <a href="/auth/logout?continue=/">Sign Out</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        View Public and Secure Pages and APIs on <a href="/">Home page</a>.
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>    
+}
+
+@section scripts {
+<script>
+function callApi() {
+    var $result = $(this).parent().find('.result');
+    var $apiurl = $(this).parent().find('.apiurl');
+    if (this.value) {
+        var apiUrl =  $(this).parent().attr('action') + "/" + encodeURIComponent(this.value);
+        $apiurl.html('<a href="' + apiUrl + '">' + apiUrl + '</a>');
+        $.getJSON(apiUrl)
+            .then(function (r) {
+                $result.html(r.result);
+            }).fail(function (jq, jqStatus, statusText) {
+                var err, errMsg = "The request failed with: " + statusText;
+                try {
+                    err = JSON.parse(jq.responseText);
+                    errMsg = err.message || errMsg;
+                } catch (e) {
+                }
+                $result.html('<div class="error">' + errMsg + "</div>");
+            });
+    } else {
+        $result.add($apiurl).html("");
+    }
+}
+    
+$(".txtName").keyup(callApi).each(callApi);
+</script>
+}

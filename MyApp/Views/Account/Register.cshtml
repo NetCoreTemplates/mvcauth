@@ -3,68 +3,60 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<div class="row" style="margin-top: 2em">
-    <div class="col-lg-6">
-@if (!Model.IsAuthenticated)
-{
-        <form action="/Account/Register" method="post">
-            <div class="form-row">
-                @Html.ValidationSummary(exceptFields: new[]{ "firstName", "email", "lastName", "password" })
-                <input type="hidden" name="redirect" value="@(Html.GetQueryString("ReturnUrl") ?? ViewData["ReturnUrl"])" />
-            </div>
-            <div class="form-group">
-                <input class="form-control input-lg" type="text" name="firstName" value="@Html.GetFormData("firstName")" placeholder="First Name">
-                <span class="help-block"></span>
-            </div>
-            <div class="form-group">
-                <input class="form-control input-lg" type="text" name="lastName" value="@Html.GetFormData("lastName")" placeholder="Last Name">
-                <span class="help-block"></span>
-            </div>
-            <div class="form-group">
-                <input class="form-control input-lg" type="text" name="email" value="@Html.GetFormData("email")" placeholder="Email">
-                <span class="help-block"></span>
-            </div>
-            <div class="form-group">
-                <input class="form-control input-lg" type="password" name="password" value="" placeholder="Password">
-                <span class="help-block"></span>
-            </div>
-            <div class="form-group">
-                <input type="checkbox" id="chkAutoLogin" name="AutoLogin" value="true" checked="checked">
-                <label for="chkAutoLogin">Auto Login</label>
-            </div>
-            <div class="form-group">
-                <b>Quick Populate:</b>                
-                <div class="quicklist">
-                    <span data-click="newUser:new@@user.com">new@@user.com</span>
-                </div>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-lg btn-primary" type="submit">Register</button>
-            </div>
-            <div class="clearfix"></div>
-        </form>
-}    
-else 
-{
-        <p>
-            <a href="/auth/logout?continue=/Account/Register">Sign Out</a> first to register a new user.
-        </p>
-}
+<div class="row">
+    <div class="col-4">
+
+    <form action="/register" method="post">
+        <div class="form-group">
+            <div class="form-group" data-validation-summary="displayName,email,password,confirmPassword"></div>
+            @Html.HiddenInputs(new { @continue = Html.Query("redirect") })
+        </div>
+        <div class="form-group">
+            <input class="form-control form-control-lg" name="displayName" type="text" placeholder="Display Name">
+        </div>
+        <div class="form-group">
+            <input class="form-control form-control-lg" name="email" type="text" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <input class="form-control form-control-lg" name="password" type="password" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <input class="form-control form-control-lg" name="confirmPassword" type="password" placeholder="Confirm Password">
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="autoLogin" name="autoLogin" value="true" checked>
+            <label for="autoLogin" class="form-check-label">Auto Login</label>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-lg btn-primary" type="submit">Register</button>
+            <a href="/Account/Login" class="btn">Sign In</a>
+        </div>
+
+        <div class="form-group">
+            <h5>Quick Populate:</h5>
+            <p class="pt-1">
+                <a href="javascript:void(0)" class="btn btn-outline-info btn-sm" data-click="newUser:new@user.com">new@user.com</a>
+            </p>
+        </div>
+    </form>
     </div>
 </div>
 
+@section scripts {
 <script>
-window.addEventListener('load', function() {
-    function toPascalCase(s) {
-        return !s ? s : s.charAt(0).toUpperCase() + s.substring(1); 
+bootstrapForm(document.querySelector('form'), {
+    success: function(r) {
+        location.href = document.querySelector('[name=continue]').value || '/';
     }
-    $(document).bindHandlers({
-       newUser: function(u) {
-           $("[Name=firstName]").val(toPascalCase($.ss.splitOnFirst(u, '@@')[0]));
-           $("[Name=lastName]").val(toPascalCase($.ss.splitOnFirst($.ss.splitOnFirst(u, '@@')[1], '.')[0]));
-           $("[Name=email]").val(u);
-           $("[Name=password]").val('p@55wOrd');
-       }
-    });        
+});
+
+bindHandlers({
+    newUser: function(u) {
+        var names = u.split('@@');
+        document.querySelector("[name=displayName]").value = toPascalCase(names[0]) + " " + toPascalCase(splitOnFirst(names[1],'.')[0]); 
+        document.querySelector("[name=email]").value = u;
+        document.querySelector("[name=password]").value = document.querySelector("[name=confirmPassword]").value = 'p@55wOrd';
+    }
 });
 </script>
+}
