@@ -1,67 +1,67 @@
-using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 using ServiceStack;
+using ServiceStack.Web;
 using ServiceStack.Auth;
-using ServiceStack.Data;
-using ServiceStack.OrmLite;
 using ServiceStack.Configuration;
 
 namespace MyApp
 {
-    [Priority(-80)] // Run before AppHost.Configure()
-    public class ConfigureAuthRepository : IConfigureAppHost, IConfigureServices
+    // Custom UserAuth Data Model with extended Metadata properties
+    public class AppUser : UserAuth
+    {
+        public string ProfileUrl { get; set; }
+        public string LastLoginIp { get; set; }
+        public DateTime? LastLoginDate { get; set; }
+    }
+
+    public class AppUserAuthEvents : AuthEvents
+    {
+        public override void OnAuthenticated(IRequest req, IAuthSession session, IServiceBase authService, 
+            IAuthTokens tokens, Dictionary<string, string> authInfo)
+        {
+            var authRepo = HostContext.AppHost.GetAuthRepository(req);
+            using (authRepo as IDisposable)
+            {
+                var userAuth = (AppUser)authRepo.GetUserAuth(session.UserAuthId);
+                userAuth.ProfileUrl = session.GetProfileUrl();
+                userAuth.LastLoginIp = req.UserHostAddress;
+                userAuth.LastLoginDate = DateTime.UtcNow;
+                authRepo.SaveUserAuth(userAuth);
+            }
+        }
+    }
+
+    public class ConfigureAuthRepository : IConfigureAppHost, IConfigureServices, IPreInitPlugin
     {
         public void Configure(IServiceCollection services)
         {
             services.AddSingleton<IAuthRepository>(c =>
-                new OrmLiteAuthRepository(c.Resolve<IDbConnectionFactory>()) {
-                    UseDistinctRoleTables = true,
-                });
+                new InMemoryAuthRepository<AppUser, UserAuthDetails>());
         }
 
         public void Configure(IAppHost appHost)
         {
-            var authRepo = (IUserAuthRepository)appHost.Resolve<IAuthRepository>();
+            var authRepo = appHost.Resolve<IAuthRepository>();
             authRepo.InitSchema();
-            AddSeedUsers(authRepo);
+
+            CreateUser(authRepo, "admin@email.com", "Admin User", "p@55wOrd", roles:new[]{ RoleNames.Admin });
+        }
+
+        public void BeforePluginsLoaded(IAppHost appHost)
+        {
+            appHost.AssertPlugin<AuthFeature>().AuthEvents.Add(new AppUserAuthEvents());
         }
 
         // Add initial Users to the configured Auth Repository
-        private void AddSeedUsers(IUserAuthRepository authRepo)
+        public void CreateUser(IAuthRepository authRepo, string email, string name, string password, string[] roles)
         {
-            if (authRepo.GetUserAuthByUserName("user@gmail.com") == null)
+            if (authRepo.GetUserAuthByUserName(email) == null)
             {
-                var testUser = authRepo.CreateUserAuth(new UserAuth
-                {
-                    DisplayName = "Test User",
-                    Email = "user@gmail.com",
-                    FirstName = "Test",
-                    LastName = "User",
-                }, "p@55wOrd");
-            }
-
-            if (authRepo.GetUserAuthByUserName("manager@gmail.com") == null)
-            {
-                var roleUser = authRepo.CreateUserAuth(new UserAuth
-                {
-                    DisplayName = "Test Manager",
-                    Email = "manager@gmail.com",
-                    FirstName = "Test",
-                    LastName = "Manager",
-                }, "p@55wOrd");
-                authRepo.AssignRoles(roleUser, roles:new[]{ "Manager" });
-            }
-
-            if (authRepo.GetUserAuthByUserName("admin@gmail.com") == null)
-            {
-                var roleUser = authRepo.CreateUserAuth(new UserAuth
-                {
-                    DisplayName = "Admin User",
-                    Email = "admin@gmail.com",
-                    FirstName = "Admin",
-                    LastName = "User",
-                }, "p@55wOrd");
-                authRepo.AssignRoles(roleUser, roles:new[]{ "Admin" });
+                var newAdmin = new AppUser { Email = email, DisplayName = name };
+                var user = authRepo.CreateUserAuth(newAdmin, password);
+                authRepo.AssignRoles(user, roles);
             }
         }
     }
