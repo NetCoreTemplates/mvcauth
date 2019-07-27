@@ -5,6 +5,7 @@ body {
 }
 .form-check.form-control {
     padding-left: 1.75rem;
+    height: auto;
 }
 .result {
     margin: 10px;
