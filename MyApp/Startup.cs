@@ -83,9 +83,6 @@ namespace MyApp
                 AdminAuthSecret = "adm1nSecret", // Enable Admin Access with ?authsecret=adm1nSecret
 #endif
             });
-
-            Svg.Load(RootDirectory.GetDirectory("/assets/svg"));
-            Svg.CssFillColor["svg-icons"] = "#E91E63";
         }
     }
 
