@@ -1,6 +1,6 @@
 # mvcauth
 
-.NET Core 2.2 MVC Website integrated with ServiceStack Auth
+.NET Core 3.1 MVC Website integrated with ServiceStack Auth
 
 ![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcauth.png)
 
