@@ -35,7 +35,9 @@ namespace MyApp
             var AppSettings = appHost.AppSettings;
             appHost.Plugins.Add(new AuthFeature(() => new CustomUserSession(),
                 new IAuthProvider[] {
-                    new NetCoreIdentityAuthProvider(AppSettings), /* Use ServiceStack Auth in MVC */
+                    new NetCoreIdentityAuthProvider(AppSettings) {
+                        AdminRoles = { "Manager" }, // Automatically Assign additional roles to Admin Users
+                    }, /* Use ServiceStack Auth in MVC */
                     new CredentialsAuthProvider(AppSettings),     /* Sign In with Username / Password credentials */
                     new FacebookAuthProvider(AppSettings),        /* Create App https://developers.facebook.com/apps */
                     new GoogleAuthProvider(AppSettings),          /* Create App https://console.developers.google.com/apis/credentials */
