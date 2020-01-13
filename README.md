@@ -10,9 +10,9 @@
 
 > Browse [source code](https://github.com/NetCoreTemplates/mvcauth) and install with the `web` dotnet tool:
 
-    $ dotnet tool install -g web
+    $ dotnet tool install -g x
 
-    $ web new mvcauth ProjectName
+    $ x new mvcauth ProjectName
 
 ### OAuth Setup
 
