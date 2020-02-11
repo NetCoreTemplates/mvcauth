@@ -11,10 +11,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyApp.ServiceInterface;
 using Funq;
 using ServiceStack;
 using ServiceStack.Mvc;
+using ServiceStack.Configuration;
+using MyApp.ServiceInterface;
 
 namespace MyApp
 {

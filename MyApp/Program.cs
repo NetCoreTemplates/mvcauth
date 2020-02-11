@@ -23,9 +23,8 @@ namespace MyApp
 
         public static IHostBuilder CreateWebHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseModularStartup<Startup,StartupActivator>();
+                .ConfigureWebHostDefaults(webBuilder => {
+                    webBuilder.UseModularStartup<Startup, StartupActivator>();
                 });
     }
 
