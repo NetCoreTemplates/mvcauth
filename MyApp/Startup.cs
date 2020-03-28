@@ -24,11 +24,7 @@ namespace MyApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public new void ConfigureServices(IServiceCollection services)
         {
-#if DEBUG
             services.AddMvc(options => options.EnableEndpointRouting = false).AddRazorRuntimeCompilation();
-#else
-            services.AddMvc(options => options.EnableEndpointRouting = false);
-#endif
 
             services.Configure<CookiePolicyOptions>(options =>
             {
