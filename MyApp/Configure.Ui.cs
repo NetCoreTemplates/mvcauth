@@ -1,18 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using ServiceStack;
 
-namespace MyApp
+[assembly: HostingStartup(typeof(MyApp.ConfigureUi))]
+
+namespace MyApp;
+
+public class ConfigureUi : IHostingStartup
 {
-    public class ConfigureUi : IConfigureAppHost
-    {
-        public void Configure(IAppHost appHost)
-        {
+    public void Configure(IWebHostBuilder builder) => builder
+        .ConfigureAppHost(appHost => {
             Svg.Load(appHost.RootDirectory.GetDirectory("/assets/svg"));
             Svg.CssFillColor["svg-icons"] = "#E91E63";
-        }
-    }
+        });
 }
-
