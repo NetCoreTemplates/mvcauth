@@ -6,6 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
+  <ItemGroup>
+    <Using Include="MyApp" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="6.*" />
