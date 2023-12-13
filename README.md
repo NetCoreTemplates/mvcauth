@@ -1,6 +1,6 @@
 # mvcauth
 
-.NET 6.0 MVC Website integrated with ServiceStack Auth
+.NET 8.0 MVC Website integrated with ServiceStack Auth
 
 ![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcauth.png)
 

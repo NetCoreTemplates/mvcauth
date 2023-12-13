@@ -1,36 +1,14 @@
-﻿@{ 
-    var debug = HostContext.DebugMode;
-    var min = debug ? "" : "[hash].min";
-}
-<!DOCTYPE html>
-<html>
+﻿<!doctype html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MyApp</title>
 
-    @Html.BundleCss(new BundleOptions {
-        Sources = {
-            "!/assets/css/default.css",
-            "/assets/css/",
-            "/css/buttons.css",
-            "/css/svg-auth.css",
-            "/css/svg-icons.css",
-            "/css/app.css",
-        },
-        SaveToDisk = !debug,
-        OutputTo = $"/css/lib.bundle{min}.css"
-    })
-
-    @Html.BundleCss(new BundleOptions {
-        Sources = {
-            "/assets/css/default.css",
-        },
-        Minify = !debug,
-        Cache = !debug,
-        SaveToDisk = !debug,
-        OutputTo = $"/css/bundle{min}.css"
-    })
+    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="/assets/css/buttons.css" />
+    <link rel="stylesheet" href="/assets/css/svg-auth.css" />
+    <link rel="stylesheet" href="/assets/css/default.css" />
 
     <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
 </head>
@@ -69,36 +47,23 @@
         </div>
     </footer>
 
-  <script>exports = window</script>
-  @Html.BundleJs(new BundleOptions {
-      Sources = {
-          "!/assets/js/dtos.js",
-          "!/assets/js/default.js",
-          "/assets/js/jquery.min.js",
-          "/assets/js/",
-      },
-      SaveToDisk = !debug,
-      OutputTo = $"/js/lib.bundle{min}.js"
-  })
-    
-  @Html.BundleJs(new BundleOptions {
-      Sources = {
-          "/assets/js/dtos.js",
-          "/assets/js/default.js",
-      },
-      Minify = !debug,
-      Cache = !debug,
-      SaveToDisk = !debug,
-      OutputTo = $"/js/bundle{min}.js"
-  })
+    <script>exports = window</script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/jquery.validate.min.js"></script>
+    <script src="/assets/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/servicestack-client.js"></script>
 
-  <script>
-    lib = window["@@servicestack/client"];
-    for (var k in lib) { window[k] = lib[k] }
-    client = new JsonServiceClient('/');
-  </script>
+    <script src="/assets/js/dtos.js"></script>
+    <script src="/assets/js/default.js"></script>
 
-  @RenderSection("scripts", required: false)
+    <script>
+        const lib = window["@@servicestack/client"];
+        for (const k in lib) { window[k] = lib[k] }
+        window.client = new JsonServiceClient('/')
+    </script>
+
+    @await RenderSectionAsync("scripts", required: false)
 
 </body>
 </html>
