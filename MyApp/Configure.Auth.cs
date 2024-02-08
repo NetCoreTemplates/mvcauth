@@ -29,7 +29,8 @@ namespace MyApp
     {
         public void Configure(IWebHostBuilder builder) => builder
             .ConfigureServices(services => {
-                //services.AddSingleton<ICacheClient>(new MemoryCacheClient()); //Store User Sessions in Memory Cache (default)
+                //override the default registration validation with your own custom implementation
+                services.AddSingleton<IValidator<Register>, CustomRegistrationValidator>();
             })
             .ConfigureAppHost(appHost => {
                 var appSettings = appHost.AppSettings;
@@ -46,8 +47,8 @@ namespace MyApp
 
                 appHost.Plugins.Add(new RegistrationFeature()); //Enable /register Service
 
-                //override the default registration validation with your own custom implementation
-                appHost.RegisterAs<CustomRegistrationValidator, IValidator<Register>>();
+                // Admin Users UI at /admin-ui/users
+                appHost.Plugins.Add(new AdminUsersFeature());
             });
     }
 }

@@ -46,9 +46,6 @@ public class ConfigureAuthRepository : IHostingStartup
             CreateUser(authRepo, "user@email.com", "User", "p@55wOrd");
             CreateUser(authRepo, "manager@email.com", "Manager", "p@55wOrd", roles:new[]{ "Manager" });
             CreateUser(authRepo, "admin@email.com", "Admin User", "p@55wOrd", roles:new[]{ RoleNames.Admin });
-
-            // Admin Users UI at /admin-ui/users
-            appHost.Plugins.Add(new AdminUsersFeature());
             
         }, afterConfigure: appHost => 
             appHost.AssertPlugin<AuthFeature>().AuthEvents.Add(new AppUserAuthEvents()));
