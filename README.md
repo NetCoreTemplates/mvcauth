@@ -1,6 +1,6 @@
 # mvcauth
 
-.NET 8.0 MVC Website integrated with ServiceStack Auth
+.NET 10.0 MVC Website integrated with ServiceStack Auth
 
 ![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcauth.png)
 
@@ -8,17 +8,15 @@
 
 ![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcauth-login.png)
 
-> Browse [source code](https://github.com/NetCoreTemplates/mvcauth) and install with the `web` dotnet tool:
+> Browse [source code](https://github.com/NetCoreTemplates/mvcauth) and install with:
 
-    $ dotnet tool install -g x
+```bash
+npx create-net mvcauth ProjectName
+```
 
-    $ x new mvcauth ProjectName
+## Jumpstart with Copilot
 
-Alternatively write new project files directly into an empty repository, using the Directory Name as the ProjectName:
-
-    $ git clone https://github.com/<User>/<ProjectName>.git
-    $ cd <ProjectName>
-    $ x new mvcauth
+Instantly [scaffold a new App with this template](https://github.com/new?template_name=mvcauth&template_owner=NetCoreTemplates) using GitHub Copilot, just describe the features you want and watch Copilot build it!
 
 ### OAuth Setup
 

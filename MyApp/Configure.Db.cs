@@ -21,10 +21,10 @@ namespace MyApp
     {
         public void Configure(IWebHostBuilder builder) => builder
             .ConfigureServices((context, services) => {
-                services.AddSingleton<IDbConnectionFactory>(new OrmLiteConnectionFactory(
-                    context.Configuration.GetConnectionString("DefaultConnection")
-                    ?? ":memory:",
-                    SqliteDialect.Provider));
+                var connectionString = context.Configuration.GetConnectionString("DefaultConnection")
+                    ?? "DataSource=App_Data/app.db;Cache=Shared";
+                
+                services.AddOrmLite(options => options.UseSqlite(connectionString));
             })
             .ConfigureAppHost(afterConfigure:appHost => {
                 appHost.ScriptContext.ScriptMethods.Add(new DbScriptsAsync());
